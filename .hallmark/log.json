@@ -1,0 +1,33 @@
+[
+ {
+  "shape": "Feature Stack",
+  "theme": "sport",
+  "axes": "light/grotesk/royal-blue",
+  "hero": "Stage, overlapping flat copy panel",
+  "nav": "masthead",
+  "footer": "colophon",
+  "imagery": "monochrome training photograph and replaceable slots",
+  "photos": [
+   "Unsplash 1516321318423-f06f85e504b3"
+  ],
+  "entry": "dealatecorp-courses",
+  "fingerprint": "4f7b07",
+  "sections": [
+   "hero",
+   "about",
+   "courses",
+   "colleges",
+   "testimonials",
+   "certificates",
+   "footer"
+  ],
+  "signature": "45 Days and 3 Months compared for each course",
+  "waived": [
+   "7b",
+   "24b"
+  ],
+  "prompt": "Dealatecorp course and internship site, exact brand palette, course applications and content administration",
+  "date": "2026-11-06",
+  "mode": "build"
+ }
+]

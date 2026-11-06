@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 20V0h20" fill="none" stroke="#FFFFFF" stroke-opacity=".12"/></pattern></defs>
+<path fill="#20309A" d="M0 0h400v260H0z"/><path fill="url(#grid)" d="M0 0h400v260H0z"/>
+<g fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M70 172 124 64l38 108 40-108 38 108 40-108 51 108"/><path opacity=".44" d="M72 169c22 0 23-91 52-91s15 90 38 90 15-91 40-91 15 91 38 91 17-91 40-91 28 92 50 92M70 193h261"/><circle cx="202" cy="64" r="6" fill="#FFFFFF"/></g>
+<text x="18" y="242" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="13">Artificial intelligence / 06</text></svg>

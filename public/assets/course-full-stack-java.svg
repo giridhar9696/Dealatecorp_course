@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 20V0h20" fill="none" stroke="#FFFFFF" stroke-opacity=".12"/></pattern></defs>
+<path fill="#20309A" d="M0 0h400v260H0z"/><path fill="url(#grid)" d="M0 0h400v260H0z"/>
+<g fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="58" y="93" width="74" height="58" rx="6"/><rect x="162" y="74" width="76" height="96" rx="6"/><rect x="269" y="93" width="73" height="58" rx="6"/><path d="M132 122h30m76 0h31M178 100h44m-44 22h44m-44 22h44M75 113h40m-40 17h28m182-17h40m-40 17h28"/></g>
+<text x="18" y="242" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="13">Web development / 04</text></svg>

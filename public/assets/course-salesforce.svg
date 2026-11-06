@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 20V0h20" fill="none" stroke="#FFFFFF" stroke-opacity=".12"/></pattern></defs>
+<path fill="#20309A" d="M0 0h400v260H0z"/><path fill="url(#grid)" d="M0 0h400v260H0z"/>
+<g fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="70" y="48" width="260" height="151" rx="8"/><path d="M70 77h260m-173 0v122m86-122v122M89 101h46m-46 23h46m-46 23h29m58-46h46m-46 23h34m53-23h46m-46 23h46m-46 23h30m-30 23h46"/><circle cx="91" cy="62" r="3"/><circle cx="106" cy="62" r="3"/></g>
+<text x="18" y="242" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="13">Business platforms / 08</text></svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="500" viewBox="0 0 720 500" role="img" aria-label="Sample Internship completion">
+  <rect width="720" height="500" fill="#FFFFFF"/>
+  <rect x="14" y="14" width="692" height="472" fill="none" stroke="#20309A" stroke-width="2"/>
+  <path d="M14 14h210L14 224V14Zm692 472H496l210-210v210Z" fill="#20309A"/><path d="M24 240 240 24m456 236L480 476" stroke="#20309A" stroke-opacity=".35"/>
+  <g text-anchor="middle" font-family="sans-serif">
+    <text x="360" y="107" font-size="25" font-weight="bold" fill="#20309A">Dealatecorp</text>
+    <text x="360" y="154" font-size="17" fill="#373737">Sample certificate</text>
+    <text x="360" y="237" font-size="35" font-weight="bold" fill="#20309A">Internship completion</text>
+    <text x="360" y="274" font-size="16" fill="#373737">Technology internship programme</text>
+    <path d="M247 332h226m-178 18h130" stroke="#373737" stroke-opacity=".4" fill="none"/>
+    <text x="360" y="399" font-size="16" fill="#373737">For preview only</text>
+  </g>
+</svg>

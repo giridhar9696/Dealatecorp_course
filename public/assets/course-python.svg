@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 20V0h20" fill="none" stroke="#FFFFFF" stroke-opacity=".12"/></pattern></defs>
+<path fill="#20309A" d="M0 0h400v260H0z"/><path fill="url(#grid)" d="M0 0h400v260H0z"/>
+<g fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M112 66H54v108h58m176-108h58v108h-58"/><path d="M108 94h52m-34 25h83m-65 25h54m-72 25h99M244 94h44m-26 25h26m-36 25h36"/></g>
+<text x="18" y="242" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="13">Programming / 01</text></svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 20V0h20" fill="none" stroke="#FFFFFF" stroke-opacity=".12"/></pattern></defs>
+<path fill="#20309A" d="M0 0h400v260H0z"/><path fill="url(#grid)" d="M0 0h400v260H0z"/>
+<g fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M122 148a34 34 0 0 1-2-68 57 57 0 0 1 107-12 40 40 0 0 1 48 27 27 27 0 0 1 0 53zM200 148v32m-72 0h144m-144 0v18m144-18v18"/><rect x="109" y="198" width="38" height="20" rx="3"/><rect x="253" y="198" width="38" height="20" rx="3"/></g>
+<text x="18" y="242" fill="#FFFFFF" font-family="system-ui,sans-serif" font-size="13">Infrastructure / 07</text></svg>
