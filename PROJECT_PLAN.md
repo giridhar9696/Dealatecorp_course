@@ -56,7 +56,8 @@ Local verification completed on 6 November 2026. The live email configuration an
 
 ## Student college labels and certificate samples
 
-- [x] Assign the ten displayed student profiles across NSRIT, VIET and WISTM, including existing seeded records.
+- [x] Assign the ten displayed student profiles across GMRIT, NSRIT, VIET and WISTM, including existing seeded records.
+- [x] Restore contrast behind the VIET and Siddhartha white wordmarks.
 - [x] Update the public internship text from “cohort” to “collaboration.”
 - [x] Create distinct course and internship certificate samples with the Dealatecorp mark.
 - [x] Check the live gallery and testimonial section in a browser.

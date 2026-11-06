@@ -171,3 +171,32 @@ test('non-persistent deployment emails applications without enabling admin stora
   }
 });
 
+test('existing testimonials gain GMR without replacing a custom college', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'dealate-colleges-test-'));
+  const dbPath = join(dir, 'site.sqlite');
+  try {
+    const initial = await start({ dbPath });
+    await initial.close();
+    const db = new DatabaseSync(dbPath);
+    try {
+      db.prepare('DELETE FROM setup WHERE id = 5').run();
+      const update = db.prepare("UPDATE content SET info = json_set(info, '$.college', ?), revision = revision + 1 WHERE kind = 'testimonials' AND id = ?");
+      const ids = db.prepare("SELECT id FROM content WHERE kind = 'testimonials' AND id LIKE 'gmrit-%' ORDER BY position").all();
+      ids.forEach(({ id }, index) => update.run(index === 0 ? 'Custom College' : studentColleges[1 + index % 3], id));
+    } finally {
+      db.close();
+    }
+    const migrated = await start({ dbPath });
+    await migrated.close();
+    const result = new DatabaseSync(dbPath);
+    try {
+      assert.deepEqual(result.prepare("SELECT json_extract(info, '$.college') AS college FROM content WHERE kind = 'testimonials' AND id LIKE 'gmrit-%' ORDER BY position").all().map(row => row.college),
+        Array.from({ length: 10 }, (_, index) => index === 0 ? 'Custom College' : studentColleges[index % studentColleges.length]));
+    } finally {
+      result.close();
+    }
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+

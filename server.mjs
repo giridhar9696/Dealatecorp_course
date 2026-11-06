@@ -81,6 +81,11 @@ function openDatabase(path) {
         .run('Bhishma Institute internship collaboration', 'Bhishma Institute internship cohort');
       db.prepare("UPDATE content SET info = json_set(info, '$.detail', 'Internship collaboration'), revision = revision + 1 WHERE kind = 'colleges' AND id = 'gmrit' AND json_extract(info, '$.detail') = 'Internship cohort'").run();
     }
+    if (db.prepare('INSERT OR IGNORE INTO setup VALUES (5)').run().changes) {
+      const updateCollege = db.prepare("UPDATE content SET info = json_set(info, '$.college', ?), revision = revision + 1 WHERE kind = 'testimonials' AND id = ? AND json_extract(info, '$.college') = ?");
+      const previousColleges = studentColleges.slice(1);
+      cohort.forEach(([id], index) => updateCollege.run(studentColleges[index % studentColleges.length], 'gmrit-' + id, previousColleges[index % previousColleges.length]));
+    }
     db.exec('COMMIT');
   } catch (error) {
     db.exec('ROLLBACK');

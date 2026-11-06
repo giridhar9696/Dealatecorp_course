@@ -38,7 +38,7 @@ export const partnerColleges = [
   ['sahe', 'Siddhartha Academy of Higher Education', 'https://siddhartha.edu.in/wp-content/uploads/2025/05/sahe-white-logo.png', ''],
   ['wistm', 'Wellfare Institute of Science Technology and Management (WISTM)', 'wistm.jpg', 'image/jpeg'],
 ];
-export const studentColleges = [partnerColleges[1][1], partnerColleges[2][1], partnerColleges[4][1]];
+export const studentColleges = [collegeName, partnerColleges[1][1], partnerColleges[2][1], partnerColleges[4][1]];
 export const additionalProfiles = [
   ['bhisma-cohort', 'Bhishma Institute internship collaboration', 'Group internship session'],
   ['bhisma-instructor', 'Bhishma Institute instructor', 'Internship session instructor'],

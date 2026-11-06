@@ -29,7 +29,7 @@ The database is created on first run at `data/dealatecorp.sqlite`. It holds the 
 | Certificates | Upload and replace certificate images for the gallery. |
 | Hero image | Replace the training photograph and provide alt text. |
 
-The four image managers accept JPEG, PNG or WebP up to 5 MB. The public site uses the supplied GMRIT logo, ten portraits cropped from the supplied posters, and two distinct sample certificates with the Dealatecorp mark. Student profiles display NSRIT, VIET and WISTM college names. Add approved student quotes and experiences in Testimonials. Imported profiles and college logos are added once to each database and remain editable.
+The four image managers accept JPEG, PNG or WebP up to 5 MB. The public site uses the supplied GMRIT logo, ten portraits cropped from the supplied posters, and two distinct sample certificates with the Dealatecorp mark. Student profiles display GMRIT, NSRIT, VIET and WISTM college names. Add approved student quotes and experiences in Testimonials. Imported profiles and college logos are added once to each database and remain editable.
 
 The browser uses the locally bundled GSAP core for course and profile reveals. [GSAP standard license](https://gsap.com/standard-license/)
 

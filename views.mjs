@@ -137,7 +137,7 @@ function collegesSection(colleges) {
   return `<section class="section colleges" id="colleges" aria-labelledby="colleges-title"><div class="wrap">
     <div class="section-heading"><h2 id="colleges-title">College collaborations</h2><p>College collaborations supporting Dealatecorp internships.</p></div>
     ${colleges.length ? `<ul class="college-list">${[...colleges, ...partnerColleges.filter(([id]) => !colleges.some(college => college.id === id)).map(([id, name, url, type]) => ({ id, name, detail: '', hasImage: false, revision: 1, kind: 'colleges', localUrl: type ? '/assets/' + url : url }))].map(college => `<li>
-      <div class="college-logo"><img src="${collegeImage(college)}" alt="" width="484" height="230" loading="lazy"></div>
+      <div class="college-logo${['viet', 'sahe'].includes(college.id) ? ' college-logo--inverse' : ''}"><img src="${collegeImage(college)}" alt="" width="484" height="230" loading="lazy"></div>
       <div><h3>${esc(canonicalCollegeName(college))}</h3>${college.detail ? `<p>${esc(college.detail)}</p>` : ''}</div>
     </li>`).join('')}</ul>` : '<p>College collaborations will appear here when published.</p>'}
   </div></section>`;
