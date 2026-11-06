@@ -53,3 +53,10 @@ Local verification completed on 6 November 2026. The live email configuration an
 - [x] Serve the supplied NSRIT, VIET and WISTM logos locally; keep the full college names.
 - [x] Add reduced-motion-aware GSAP hover feedback to college logos.
 - [x] Verify JavaScript syntax, application tests, and HTTP delivery of all nine assets.
+
+## Student college labels and certificate samples
+
+- [x] Assign the ten displayed student profiles across NSRIT, VIET and WISTM, including existing seeded records.
+- [x] Update the public internship text from “cohort” to “collaboration.”
+- [x] Create distinct course and internship certificate samples with the Dealatecorp mark.
+- [x] Check the live gallery and testimonial section in a browser.

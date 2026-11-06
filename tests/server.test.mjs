@@ -7,6 +7,7 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import { DatabaseSync } from 'node:sqlite';
 import { test } from 'node:test';
 import { createApp } from '../server.mjs';
+import { studentColleges } from '../catalog.mjs';
 
 const password = 'test-only-local-password';
 
@@ -47,7 +48,19 @@ test('application validation, idempotency, durable outbox, and protected admin',
   }
   try {
     const { get, post } = app;
-    assert.equal((await get('/')).status, 200);
+    const home = await get('/');
+    assert.equal(home.status, 200);
+    const homepage = await home.text();
+    assert.match(homepage, /dealatecorp-certificate-course\.png/);
+    assert.match(homepage, /dealatecorp-certificate-internship\.png/);
+    assert.doesNotMatch(homepage, /GMRIT internship cohort/);
+    const seeded = new DatabaseSync(dbPath);
+    try {
+      assert.deepEqual(seeded.prepare("SELECT json_extract(info, '$.college') AS college FROM content WHERE kind = 'testimonials' AND id LIKE 'gmrit-%' ORDER BY position").all().map(row => row.college),
+        Array.from({ length: 10 }, (_, index) => studentColleges[index % studentColleges.length]));
+    } finally {
+      seeded.close();
+    }
     assert.equal((await get('/media/courses')).status, 404);
     assert.match(await (await get('/admin/applications')).text(), /Admin sign in/);
     assert.equal((await post('/admin/applications/status', {})).status, 401);

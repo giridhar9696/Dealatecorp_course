@@ -135,7 +135,7 @@ function catalogue(courses, selectedId) {
 
 function collegesSection(colleges) {
   return `<section class="section colleges" id="colleges" aria-labelledby="colleges-title"><div class="wrap">
-    <div class="section-heading"><h2 id="colleges-title">College collaborations</h2><p>College cohorts taking part in Dealatecorp internships.</p></div>
+    <div class="section-heading"><h2 id="colleges-title">College collaborations</h2><p>College collaborations supporting Dealatecorp internships.</p></div>
     ${colleges.length ? `<ul class="college-list">${[...colleges, ...partnerColleges.filter(([id]) => !colleges.some(college => college.id === id)).map(([id, name, url, type]) => ({ id, name, detail: '', hasImage: false, revision: 1, kind: 'colleges', localUrl: type ? '/assets/' + url : url }))].map(college => `<li>
       <div class="college-logo"><img src="${collegeImage(college)}" alt="" width="484" height="230" loading="lazy"></div>
       <div><h3>${esc(canonicalCollegeName(college))}</h3>${college.detail ? `<p>${esc(college.detail)}</p>` : ''}</div>
@@ -161,7 +161,7 @@ function testimonialsSection(testimonials) {
             ${student.department ? `<p class="story__department">${esc(student.department)} intern</p>` : ''}
             ${student.quote ? `<blockquote><p>${esc(student.quote)}</p></blockquote>` : ''}
             <dl class="story__facts">
-              <div><dt>Experience at Dealatecorp</dt><dd>${esc(student.experience || (student.id.startsWith('gmrit-') ? 'Participated in the GMRIT internship cohort.' : 'Internship with Dealatecorp.'))}</dd></div>
+              <div><dt>Experience at Dealatecorp</dt><dd>${esc(student.experience || (student.id.startsWith('gmrit-') ? 'Participated in a Dealatecorp internship collaboration.' : 'Internship with Dealatecorp.'))}</dd></div>
               ${student.skills ? `<div><dt>Skills and knowledge gained</dt><dd>${esc(student.skills)}</dd></div>` : ''}
             </dl>
           </div>
@@ -173,13 +173,13 @@ function testimonialsSection(testimonials) {
 
 function certificatesSection(certificates) {
   const entries = certificates.length ? certificates : [
-    { name: 'Course completion certificate', url: '/assets/course-certificate.svg', sample: true },
-    { name: 'Internship completion certificate', url: '/assets/internship-certificate.svg', sample: true },
+    { name: 'Course completion certificate', url: '/assets/dealatecorp-certificate-course.png', sample: true },
+    { name: 'Internship completion certificate', url: '/assets/dealatecorp-certificate-internship.png', sample: true },
   ];
   return `<section class="section certificates" id="certificates" aria-labelledby="certificates-title"><div class="wrap">
     <div class="section-heading"><h2 id="certificates-title">Certificates</h2><p>Open a certificate to view it at a larger size.</p></div>
     <div class="gallery">${entries.map(cert => {
-      const src = cert.hasImage ? media(cert) : '/assets/dealatecorp-certificate-' + (cert.name.toLowerCase().includes('internship') ? 'internship' : 'course') + '.svg';
+      const src = cert.hasImage ? media(cert) : cert.url || '/assets/dealatecorp-certificate-' + (cert.name.toLowerCase().includes('internship') ? 'internship' : 'course') + '.png';
       const sample = cert.sample || !cert.hasImage;
       return `<a class="certificate" href="${src}" data-preview="${esc(cert.name)}" aria-label="Preview ${sample ? 'sample ' : ''}${esc(cert.name)}">
         <span class="certificate__image"><img src="${src}" width="720" height="500" alt="${sample ? 'Sample ' : ''}${esc(cert.name)}" loading="lazy"></span>

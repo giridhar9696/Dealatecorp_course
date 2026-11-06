@@ -25,11 +25,11 @@ The database is created on first run at `data/dealatecorp.sqlite`. It holds the 
 | Applications | Read submissions, filter by status and move them through review, acceptance or decline. |
 | Courses | Add, edit or remove courses and update both descriptions. Earlier applications retain the course name selected at submission. |
 | Colleges | Manage names and collaboration details, and upload or replace logos. |
-| Testimonials | Manage the ten imported GMRIT profiles and add photos, departments, internship experiences, skills and approved quotes. |
+| Testimonials | Manage the ten imported student profiles and add photos, departments, internship experiences, skills and approved quotes. |
 | Certificates | Upload and replace certificate images for the gallery. |
 | Hero image | Replace the training photograph and provide alt text. |
 
-The four image managers accept JPEG, PNG or WebP up to 5 MB. The public site uses the supplied GMRIT logo, ten portraits cropped from the supplied posters, and two labelled sample certificates. Add approved student quotes and experiences in Testimonials. The supplied GMRIT profiles and college logo are added once to each database and remain editable.
+The four image managers accept JPEG, PNG or WebP up to 5 MB. The public site uses the supplied GMRIT logo, ten portraits cropped from the supplied posters, and two distinct sample certificates with the Dealatecorp mark. Student profiles display NSRIT, VIET and WISTM college names. Add approved student quotes and experiences in Testimonials. Imported profiles and college logos are added once to each database and remain editable.
 
 The browser uses the locally bundled GSAP core for course and profile reveals. [GSAP standard license](https://gsap.com/standard-license/)
 
@@ -41,7 +41,7 @@ Set `RESEND_API_KEY`, `EMAIL_FROM` (a sender at a verified domain) and `EMAIL_TO
 
 ### Vercel live site without stored submissions
 
-Connect this GitHub repository to Vercel. The root `server.ts` starts the Node server and Vercel includes the bundled portrait and logo assets. The Vercel entrypoint uses an in-memory catalogue, disables admin access, and sends application details directly to HR through the existing EmailJS template. It does not save applications or admin edits in a database. Update the template's fixed recipient to `hr@dealatecorp.in` and its Reply-To to `{{email}}`.
+The deployed site is at https://dealatecorp-course.vercel.app/. The root `server.mjs` exports the Node server and Vercel includes the bundled portrait and logo assets. The Vercel entrypoint uses an in-memory catalogue, disables admin access, and sends application details directly to HR through the existing EmailJS template. It does not save applications or admin edits in a database. Update the template's fixed recipient to `hr@dealatecorp.in` and its Reply-To to `{{email}}`.
 
 For a self-hosted deployment that needs the admin dashboard and application history, put the server behind an HTTPS reverse proxy, set `PUBLIC_ORIGIN` to the site's HTTPS origin, keep `.env` private, and persist and back up the SQLite database.
 

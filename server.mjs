@@ -5,7 +5,7 @@ import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
-import { additionalProfiles, cohort, collegeName, contentTypes, courses, partnerColleges, statuses, tracks } from './catalog.mjs';
+import { additionalProfiles, cohort, collegeName, contentTypes, courses, partnerColleges, statuses, studentColleges, tracks } from './catalog.mjs';
 import { admin, application, applicationReceived, errorPage, esc, home, login, privacy } from './views.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
@@ -62,17 +62,24 @@ function openDatabase(path) {
         db.prepare("UPDATE content SET image = ?, image_type = 'image/png', revision = revision + 1 WHERE kind = 'colleges' AND id = ? AND image IS NULL")
           .run(logo, college.id);
       } else {
-        seed.run('colleges', 'gmrit', JSON.stringify({ name: collegeName, detail: 'Internship cohort' }), 0, logo, 'image/png');
+        seed.run('colleges', 'gmrit', JSON.stringify({ name: collegeName, detail: 'Internship collaboration' }), 0, logo, 'image/png');
       }
       cohort.forEach(([id, name, department], index) => {
         const photo = readFileSync(resolve(root, 'content', 'portraits', id + '.jpg'));
-        seed.run('testimonials', 'gmrit-' + id, JSON.stringify({ name, college: collegeName, department }), index, photo, 'image/jpeg');
+        seed.run('testimonials', 'gmrit-' + id, JSON.stringify({ name, college: studentColleges[index % studentColleges.length], department }), index, photo, 'image/jpeg');
       });
     }
     if (db.prepare('INSERT OR IGNORE INTO setup VALUES (3)').run().changes) {
       const add = db.prepare('INSERT OR IGNORE INTO content(kind, id, info, position, image, image_type) VALUES (?, ?, ?, (SELECT COALESCE(MAX(position), -1) + 1 FROM content WHERE kind = ?), ?, ?)');
       partnerColleges.forEach(([id, name, asset, type]) => add.run('colleges', id, JSON.stringify({ name }), 'colleges', type ? readFileSync(resolve(root, 'public/assets', asset)) : null, type || null));
       additionalProfiles.forEach(([id, name, department], index) => add.run('testimonials', id, JSON.stringify({ name, college: partnerColleges[0][1], department }), 'testimonials', readFileSync(resolve(root, 'content/portraits', id + '.webp')), 'image/webp'));
+    }
+    if (db.prepare('INSERT OR IGNORE INTO setup VALUES (4)').run().changes) {
+      const updateCollege = db.prepare("UPDATE content SET info = json_set(info, '$.college', ?), revision = revision + 1 WHERE kind = 'testimonials' AND id = ? AND json_extract(info, '$.college') = ?");
+      cohort.forEach(([id], index) => updateCollege.run(studentColleges[index % studentColleges.length], 'gmrit-' + id, collegeName));
+      db.prepare("UPDATE content SET info = json_set(info, '$.name', ?), revision = revision + 1 WHERE kind = 'testimonials' AND id = 'bhisma-cohort' AND json_extract(info, '$.name') = ?")
+        .run('Bhishma Institute internship collaboration', 'Bhishma Institute internship cohort');
+      db.prepare("UPDATE content SET info = json_set(info, '$.detail', 'Internship collaboration'), revision = revision + 1 WHERE kind = 'colleges' AND id = 'gmrit' AND json_extract(info, '$.detail') = 'Internship cohort'").run();
     }
     db.exec('COMMIT');
   } catch (error) {
