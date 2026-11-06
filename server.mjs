@@ -127,12 +127,35 @@ function sendEmail(key, payload, idempotencyKey) {
   });
 }
 
+async function sendApplicationEmail(values, course, reference) {
+  const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(15_000),
+    body: JSON.stringify({
+      user_id: '7jlnugNTa693uCIbD', service_id: 'service_zej18hh', template_id: 'template_gl9vfff',
+      template_params: {
+        name: values.name, email: values.email, from_name: values.name, reply_to: values.email,
+        title: 'Dealatecorp internship application', time: new Date().toISOString(),
+        message: [`Application reference: ${reference}`, `College or university: ${values.college}`,
+          `Phone: ${values.phone}`, `Course: ${course.name}`, `Duration: ${tracks[values.track].duration} — ${tracks[values.track].label}`].join('\n'),
+      },
+    }),
+  });
+  if (!response.ok) {
+    await response.body?.cancel();
+    throw httpError(502, 'We could not send your application. Please try again or email HR.');
+  }
+}
+
 export function createApp({
   dbPath = resolve(root, 'data', 'dealatecorp.sqlite'),
   adminPassword = process.env.ADMIN_PASSWORD || '',
   publicOrigin = process.env.PUBLIC_ORIGIN || '',
   email = { key: process.env.RESEND_API_KEY, from: process.env.EMAIL_FROM, to: process.env.EMAIL_TO },
   deliver = sendEmail,
+  persistApplications = true,
+  deliverApplication = sendApplicationEmail,
 } = {}) {
   if (adminPassword && adminPassword.length < 16) throw new Error('ADMIN_PASSWORD must contain at least 16 characters.');
   const origin = publicOrigin ? new URL(publicOrigin).origin : '';
@@ -260,6 +283,7 @@ export function createApp({
     const path = url.pathname;
     const method = req.method;
     const isRead = method === 'GET' || method === 'HEAD';
+    const requestOrigin = origin || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`;
     const respond = (status, body, type = 'text/html; charset=utf-8', headers = {}) => {
       res.writeHead(status, { 'Content-Type': type, ...headers });
       res.end(method === 'HEAD' ? undefined : body);
@@ -267,21 +291,20 @@ export function createApp({
     const go = location => res.writeHead(303, { Location: location }).end();
     if (!isRead && method !== 'POST') return respond(405, errorPage('This method is unavailable.'), undefined, { Allow: 'GET, HEAD, POST' });
     if (method === 'POST') {
-      const expected = origin || `http://${req.headers.host}`;
-      if (req.headers.origin !== expected) throw httpError(403, 'This form must be submitted from the Dealatecorp site.');
+      if (req.headers.origin !== requestOrigin) throw httpError(403, 'This form must be submitted from the Dealatecorp site.');
     }
 
     if (isRead && path === '/') {
       const data = Object.fromEntries(Object.keys(contentTypes).map(kind => [kind, rowsFor(kind)]));
-      return respond(200, home(data, url.searchParams.get('course'), origin, randomUUID()));
+      return respond(200, home(data, url.searchParams.get('course'), requestOrigin, randomUUID()));
     }
 
-    if (isRead && path === '/privacy') return respond(200, privacy());
+    if (isRead && path === '/privacy') return respond(200, privacy({ persistApplications }));
     if (isRead && path === '/robots.txt') {
-      return respond(200, `User-agent: *\nDisallow: /admin\nDisallow: /apply\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`, 'text/plain; charset=utf-8');
+      return respond(200, `User-agent: *\nDisallow: /admin\nDisallow: /apply\nSitemap: ${requestOrigin}/sitemap.xml\n`, 'text/plain; charset=utf-8');
     }
-    if (isRead && path === '/sitemap.xml' && origin) {
-      return respond(200, `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${esc(origin)}/</loc></url><url><loc>${esc(origin)}/privacy</loc></url></urlset>`, 'application/xml; charset=utf-8');
+    if (isRead && path === '/sitemap.xml') {
+      return respond(200, `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${esc(requestOrigin)}/</loc></url><url><loc>${esc(requestOrigin)}/privacy</loc></url></urlset>`, 'application/xml; charset=utf-8');
     }
 
     if (isRead && (path === '/assets/gsap.min.js' || /^\/(?:style|tokens|base)\.css$|^\/site\.js$|^\/assets\/[a-z0-9-]+\.(?:jpg|png|svg|webp|woff2|css)$/.test(path))) {
@@ -323,15 +346,18 @@ export function createApp({
         ? respond(422, JSON.stringify({ message }), jsonType)
         : respond(422, application(available, values, message));
       if (!rate(`email/${hash(values.email.toLowerCase()).toString('hex')}`, 8, 600_000)) throw httpError(429, 'Too many attempts for this email. Please try again later.');
-      const reference = saveApplication(values, course);
-      void deliverPending().catch(error => console.error('Email queue:', error.message));
+      const reference = persistApplications
+        ? saveApplication(values, course)
+        : `DC-${randomUUID().replaceAll('-', '').toUpperCase()}`;
+      if (persistApplications) void deliverPending().catch(error => console.error('Email queue:', error.message));
+      else await deliverApplication(values, course, reference);
       return acceptsJson(req)
         ? respond(201, JSON.stringify({ reference, requestId: randomUUID() }), jsonType)
         : go(`/apply/received?reference=${reference}`);
     }
     if (isRead && path === '/apply/received') {
       const reference = url.searchParams.get('reference') || '';
-      if (/^DC-[0-9A-F]{32}$/.test(reference) && db.prepare('SELECT 1 FROM applications WHERE reference = ?').get(reference)) {
+      if (/^DC-[0-9A-F]{32}$/.test(reference) && (!persistApplications || db.prepare('SELECT 1 FROM applications WHERE reference = ?').get(reference))) {
         return respond(200, applicationReceived(reference));
       }
     }

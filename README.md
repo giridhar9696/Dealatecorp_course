@@ -39,7 +39,11 @@ Set `RESEND_API_KEY`, `EMAIL_FROM` (a sender at a verified domain) and `EMAIL_TO
 
 **Email HR** uses the supplied EmailJS service and template for visitor enquiries. In the EmailJS dashboard, set the template's **To Email** to `hr@dealatecorp.in` as a fixed address and its **Reply-To** to `{{email}}`. The form sends the standard `name`, `email`, `message`, `title` and `time` variables. If the domain allowlist is enabled, add the deployed website origin. The browser tests mock delivery. [EmailJS template setup](https://www.emailjs.com/docs/tutorial/creating-email-template/) · [EmailJS domain allowlist](https://www.emailjs.com/docs/faq/can-i-add-my-domain-to-allowlist/)
 
-For a public deployment, put the server behind an HTTPS reverse proxy, set `PUBLIC_ORIGIN` to the site's HTTPS origin, keep `.env` private, and persist and back up the database. The public origin enables the canonical URL, sitemap and secure session cookies.
+### Vercel live site without stored submissions
+
+Connect this GitHub repository to Vercel. The root `server.ts` starts the Node server and Vercel includes the bundled portrait and logo assets. The Vercel entrypoint uses an in-memory catalogue, disables admin access, and sends application details directly to HR through the existing EmailJS template. It does not save applications or admin edits in a database. Update the template's fixed recipient to `hr@dealatecorp.in` and its Reply-To to `{{email}}`.
+
+For a self-hosted deployment that needs the admin dashboard and application history, put the server behind an HTTPS reverse proxy, set `PUBLIC_ORIGIN` to the site's HTTPS origin, keep `.env` private, and persist and back up the SQLite database.
 
 ## Verify
 

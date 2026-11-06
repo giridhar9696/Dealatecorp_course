@@ -132,3 +132,29 @@ test('application validation, idempotency, durable outbox, and protected admin',
   }
 });
 
+test('non-persistent deployment emails applications without enabling admin storage', async () => {
+  const sent = [];
+  const app = await start({
+    dbPath: ':memory:', persistApplications: false,
+    deliverApplication: async (values, course, reference) => sent.push({ values, course, reference }),
+  });
+  try {
+    assert.equal((await app.get('/admin')).status, 503);
+    assert.match(await (await app.get('/privacy')).text(), /does not save application details in a database/);
+    const html = await (await app.get('/apply?course=python&track=advanced')).text();
+    const requestId = html.match(/name="requestId" value="([^"]+)"/)[1];
+    const response = await app.post('/apply', {
+      requestId, name: 'Test Student', email: 'student@example.test', college: 'Example College',
+      phone: '+91 80000 00000', course: 'python', track: 'advanced',
+    }, '', undefined, 'application/json');
+    assert.equal(response.status, 201);
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].values.phone, '+91 80000 00000');
+    assert.equal(sent[0].course.name, 'Python Programming');
+    assert.match(sent[0].reference, /^DC-[0-9A-F]{32}$/);
+    assert.equal((await app.get(`/apply/received?reference=${sent[0].reference}`)).status, 200);
+  } finally {
+    await app.close();
+  }
+});
+

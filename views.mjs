@@ -317,11 +317,12 @@ export function applicationReceived(reference) {
   </div></main>`);
 }
 
-export function privacy() {
+export function privacy({ persistApplications = true } = {}) {
   return page('Application privacy', `<main class="inner wrap" id="main"><div class="prose">
     <h1>Application privacy</h1>
     <p>The application form collects your name, email address, college, phone number, course and duration. Dealatecorp uses these details to review your application and contact you about it.</p>
-    <p>Authorized staff can view applications. When email delivery is configured, the email provider processes the application confirmation and admissions notification. To ask about your information or request a correction, <a href="mailto:hr@dealatecorp.in">email Dealatecorp HR</a>.</p>
+    ${persistApplications ? '<p>Authorized staff can view applications. When email delivery is configured, the email provider processes the application confirmation and admissions notification.</p>' : '<p>This website does not save application details in a database. It sends them to Dealatecorp HR through EmailJS so the team can respond. EmailJS processes the message for delivery.</p>'}
+    <p>To ask about your information or request a correction, <a href="mailto:hr@dealatecorp.in">email Dealatecorp HR</a>.</p>
     <p>The HR contact form sends your name, email address and message through EmailJS so Dealatecorp can reply.</p>
     <a class="text-link" href="/apply">Back to the application</a>
   </div></main>`, publicHeader, false);

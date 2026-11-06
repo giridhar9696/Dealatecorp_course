@@ -2,5 +2,6 @@
 /data/
 /node_modules/
 /.playwright-cli/
+/.vercel/
 /.hallmark/shots/
 /shots/
