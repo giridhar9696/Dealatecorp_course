@@ -5,3 +5,6 @@
 /.vercel/
 /.hallmark/shots/
 /shots/
+
+.vercel
+.env*

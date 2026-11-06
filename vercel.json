@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "server.ts": {
-      "includeFiles": ["content/portraits/**", "public/assets/**"]
+    "server.mjs": {
+      "includeFiles": "{content/portraits/**,public/assets/**}"
     }
   }
 }
